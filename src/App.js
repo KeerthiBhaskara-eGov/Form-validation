@@ -103,9 +103,9 @@ export const App = () => {
                   <tr>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Email</th>
-                    <th>Mobileno</th>
                     <th>Address</th>
+                    <th>Mobileno</th>
+                    <th>Email</th>
                     <th>Delete</th>
                   </tr>
                 </thead>
