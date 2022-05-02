@@ -1,138 +1,102 @@
 import React,{useState, useEffect} from 'react'
-import { View } from './components/View';
-
-// getting the values of local storage
-const getDatafromLS=()=>{
-  const data = localStorage.getItem('employees');
-  if(data){
-    return JSON.parse(data);
-  }
-  else{
-    return []
-  }
-}
-
+import axios from 'axios';
 export const App = () => {
-
-  // main array of objects state || employees state || employees array of objects
-  const [employees, setemployees]=useState(getDatafromLS());
-
-  // input field states
-  const [id, setId]=useState('');
-  const [fname, setFname]=useState('');
-  const [lname, setLname]=useState('');
-  const [email, setEmail]=useState('');
-  const [address, setAddress]=useState('');
-  const [age, setAge]=useState('');
-  const [mobileno, setMobileno]=useState('');
-
-
-  // form submit event
-  const handleAddEmployeeSubmit=(e)=>{
+  const [data, setData] = useState({
+    empid:'',
+    empfname: '',
+    emplname:'',
+    age:'',
+    emailid: '',
+    phoneNo:'',
+    city:''
+  });
+  const val = (e) => {
+    setData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+  const submit = (e) => {
     e.preventDefault();
-    // creating an object
-    let employee={
-      id,
-      fname,
-      lname,
-      email,
-      address,
-      age,
-      mobileno,
-      
-    }
-    setemployees([...employees,employee]);
-    setId('');
-    setFname('');
-    setLname('');
-    setEmail('');
-    setAddress('');
-    setAge('');
-    setMobileno('');
-    setMobileno('');
+    console.log(data);
+    const api = 'http://localhost:8080/employee';
+    axios.post(api, { ...data });
+  };
 
-    
-  }
-
-  // delete employee from LS
-  const deleteEmployee=(id)=>{
-    const filteredEmployees=employees.filter((element,index)=>{
-      return element.id !== id
-    })
-    setemployees(filteredEmployees);
-  }
-
-  // saving data to local storage
-  useEffect(()=>{
-    localStorage.setItem('employees',JSON.stringify(employees));
-  },[employees])
-
+  const [ApiData, setForm] = useState([]);
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/employee/`)
+      .then((response) => {
+        console.log(response.data);
+        setForm(response.data);
+      });
+  }, []);
   return (
     <div className='wrapper'>
       <h1>Employee Details</h1>
       <div className='main'>
-
         <div className='form-container'>
           <form autoComplete="off" className='form-group'
-          onSubmit={handleAddEmployeeSubmit}>
-            <label>Id</label>
-            <input type="number" className='form-control' required
-            onChange={(e)=>setId(e.target.value)} value={id}></input>
+          onSubmit={submit}>
+            <label>ID</label>
+            <input type="number" name="empid" className='form-control' required
+            onChange={val}></input>
             <label>FirstName</label>
-            <input type="text" className='form-control' required
-            onChange={(e)=>setFname(e.target.value)} value={fname}></input>
+            <input type="text" name="empfname" className='form-control' required
+            onChange={val}></input>
              <label>LastName</label>
-            <input type="text" className='form-control' required
-            onChange={(e)=>setLname(e.target.value)} value={lname}></input>
+            <input type="text" name="emplname" className='form-control' required
+            onChange={val}></input>
             <label>Mobileno</label>
-            <input type="tel" name="number" pattern="[789][0-9]{9}" className='form-control' required
-            onChange={(e)=>setMobileno(e.target.value)} value={mobileno}></input>
+            <input type="tel" name="phoneNo" pattern="[789][0-9]{9}" className='form-control' required
+            onChange={val}></input>
             <label>Email</label>
-            <input type="email" name="email" className='form-control' required
-            onChange={(e)=>setEmail(e.target.value)} value={email}></input>
-            <label>Address</label>
-            <input type="text" className='form-control' required
-            onChange={(e)=>setAddress(e.target.value)} value={address}></input>
+            <input type="email" name="emailid" className='form-control' required
+            onChange={val}></input>
+            <label>City</label>
+            <input type="text" name="city" className='form-control' required
+            onChange={val}></input>
             <label>Age</label>
-            <input type="number" className='form-control' required
-            onChange={(e)=>setAge(e.target.value)} value={age}></input>
+            <input type="number" name="age" className='form-control' required
+            onChange={val}></input>
             <br></br>
             <button type="submit" className='btn btn-success btn-md'>
               ADD
             </button>
           </form>
         </div>
-
+        </div>
         <div className='view-container'>
-          {employees.length>0&&<>
-            <div className='table-responsive'>
+        <div className='table-responsive'>
               <table className='table'>
                 <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>FirstName</th>
-                    <th>LastName</th>
-                    <th>Address</th>
-                    <th>Age</th>
-                    <th>Mobileno</th>
-                    <th>Email</th>
-                    <th>Delete</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <View employees={employees} deleteEmployee={deleteEmployee}/>
-                </tbody>
-              </table>
-            </div>
-            <button className='btn btn-danger btn-md'
-            onClick={()=>setemployees([])}>Remove All</button>
-          </>}
-          {employees.length < 1 && <div>No employees are added yet</div>}
-        </div>
-
+        <tr>
+        <th>ID</th>
+          <th>FirstName</th>
+          <th>LastName</th>
+          <th>Age</th>
+          <th>EmailID</th>
+          <th>city</th>
+          <th>phoneNo</th>
+        </tr>
+        </thead>
+        
+        {ApiData.map((data, key) => {
+          return (
+            <tr key={key}>
+              <td>{data.empid}</td>
+              <td>{data.empfname}</td>
+              <td>{data.emplname}</td>
+              <td>{data.age}</td>
+              <td>{data.emailid}</td>
+              <td>{data.city}</td>
+              <td>{data.phoneNo}</td>
+              
+            </tr>
+          );
+        })}
+      </table>
+      </div> 
       </div>
     </div>
   )
 }
-
 export default App
