@@ -19,9 +19,11 @@ export const App = () => {
 
   // input field states
   const [id, setId]=useState('');
-  const [name, setName]=useState('');
+  const [fname, setFname]=useState('');
+  const [lname, setLname]=useState('');
   const [email, setEmail]=useState('');
   const [address, setAddress]=useState('');
+  const [age, setAge]=useState('');
   const [mobileno, setMobileno]=useState('');
 
 
@@ -31,17 +33,21 @@ export const App = () => {
     // creating an object
     let employee={
       id,
-      name,
+      fname,
+      lname,
       email,
       address,
+      age,
       mobileno,
       
     }
     setemployees([...employees,employee]);
     setId('');
-    setName('');
+    setFname('');
+    setLname('');
     setEmail('');
     setAddress('');
+    setAge('');
     setMobileno('');
     setMobileno('');
 
@@ -70,24 +76,26 @@ export const App = () => {
           <form autoComplete="off" className='form-group'
           onSubmit={handleAddEmployeeSubmit}>
             <label>Id</label>
-            <input type="text" className='form-control' required
+            <input type="number" className='form-control' required
             onChange={(e)=>setId(e.target.value)} value={id}></input>
-            <br></br>
-            <label>Name</label>
+            <label>FirstName</label>
             <input type="text" className='form-control' required
-            onChange={(e)=>setName(e.target.value)} value={name}></input>
-            <br></br>
+            onChange={(e)=>setFname(e.target.value)} value={fname}></input>
+             <label>LastName</label>
+            <input type="text" className='form-control' required
+            onChange={(e)=>setLname(e.target.value)} value={lname}></input>
             <label>Mobileno</label>
             <input type="tel" name="number" pattern="[789][0-9]{9}" className='form-control' required
             onChange={(e)=>setMobileno(e.target.value)} value={mobileno}></input>
-            <br></br>
             <label>Email</label>
             <input type="email" name="email" className='form-control' required
             onChange={(e)=>setEmail(e.target.value)} value={email}></input>
-            <br></br>
             <label>Address</label>
             <input type="text" className='form-control' required
             onChange={(e)=>setAddress(e.target.value)} value={address}></input>
+            <label>Age</label>
+            <input type="number" className='form-control' required
+            onChange={(e)=>setAge(e.target.value)} value={age}></input>
             <br></br>
             <button type="submit" className='btn btn-success btn-md'>
               ADD
@@ -102,8 +110,10 @@ export const App = () => {
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Name</th>
+                    <th>FirstName</th>
+                    <th>LastName</th>
                     <th>Address</th>
+                    <th>Age</th>
                     <th>Mobileno</th>
                     <th>Email</th>
                     <th>Delete</th>

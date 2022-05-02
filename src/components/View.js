@@ -8,8 +8,10 @@ export const View = ({employees,deleteEmployee}) => {
         
         <tr key={employee.id}>
             <td>{employee.id}</td>
-            <td>{employee.name}</td>
+            <td>{employee.fname}</td>
+            <td>{employee.lname}</td>
             <td>{employee.address}</td>
+            <td>{employee.age}</td>
             <td>{employee.mobileno}</td>
             <td>{employee.email}</td>
             <td className='delete-btn' onClick={()=>deleteEmployee(employee.id)}>
