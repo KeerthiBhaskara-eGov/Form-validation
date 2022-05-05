@@ -29,6 +29,22 @@ export const App = () => {
         setForm(response.data);
       });
   }, []);
+  
+  const getData = () => {
+    axios
+      .get(`http://localhost:8080/employee`)
+      .then((getData) => {
+        setData(getData.data);
+      });
+  };
+  const Delete = (empid) => {
+    axios
+      .delete(`http://localhost:8080/employee/${empid}`)
+      .then(() => {
+        getData();
+        console.log('DATA DELETE');
+      });
+  };
   return (
     <div className='wrapper'>
       <h1>Employee Details</h1>
@@ -76,6 +92,7 @@ export const App = () => {
           <th>EmailID</th>
           <th>city</th>
           <th>phoneNo</th>
+          <th>DELETE</th>
         </tr>
         </thead>
         
@@ -89,7 +106,7 @@ export const App = () => {
               <td>{data.emailid}</td>
               <td>{data.city}</td>
               <td>{data.phoneNo}</td>
-              
+              <button onClick={() => Delete(data.empid)}>Delete</button>
             </tr>
           );
         })}
